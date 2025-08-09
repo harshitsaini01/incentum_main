@@ -94,7 +94,7 @@ const CoApplicantForm = () => {
 
     setIsSubmitting(true);
     try {
-      await axios.post(`/multi-step-form/save-step`, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/save-step`, {
         applicationId,
         step: 5,
         stepData: { coApplicants }

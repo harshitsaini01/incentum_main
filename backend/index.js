@@ -24,6 +24,11 @@ const { verifyAdminJWT } = require("./src/middleware/adminAuth.middleware");
 const app = express();
 const port = process.env.PORT || 8080;
 
+// Trust proxy for production (required for rate limiting behind reverse proxy)
+if (process.env.NODE_ENV === "production") {
+  app.set('trust proxy', 1);
+}
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

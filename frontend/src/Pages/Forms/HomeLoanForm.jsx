@@ -108,7 +108,7 @@ const HomeLoanForm = () => {
     if (!applicationId) return;
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/save-step`, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/save-step`, {
         applicationId,
         step,
         stepData
@@ -212,7 +212,7 @@ const HomeLoanForm = () => {
       
       // Create application if not already created
       if (!currentApplicationId) {
-        const createResponse = await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/create`, {
+        const createResponse = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/create`, {
           userId: user.id,
           loanType: 'home'
         });
@@ -253,7 +253,7 @@ const HomeLoanForm = () => {
       });
 
       // Save Step 1 personal details data
-      const saveResponse = await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/save-step`, {
+      const saveResponse = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/save-step`, {
         applicationId: currentApplicationId,
         step: 1,
         stepData: stepData
@@ -358,7 +358,7 @@ const HomeLoanForm = () => {
       console.log('Submitting application with ID:', applicationId);
       
       // Submit application
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/submit`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/submit`, {
         applicationId: applicationId
       });
 
@@ -394,7 +394,7 @@ const HomeLoanForm = () => {
       formData.append('documentType', documentType);
       formData.append('applicantType', 'main');
 
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/upload-document`, formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/upload-document`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
