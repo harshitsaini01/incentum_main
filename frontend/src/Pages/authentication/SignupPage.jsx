@@ -72,7 +72,7 @@ export default function SignupPage() {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/users/register`, formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/users/register`, formData, {
         withCredentials: true, // Keep cookies for session
       });
       toast.success("Registration successful!", {
