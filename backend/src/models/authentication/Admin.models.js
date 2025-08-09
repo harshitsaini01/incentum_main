@@ -59,7 +59,9 @@ const adminSchema = new mongoose.Schema({
 
 // Index for performance - wrap in try-catch to prevent duplicate index errors
 try {
-  adminSchema.index({ email: 1 });
+  // Do NOT add an email index here; `unique: true` on the `email` field
+  // already creates a unique index. Adding another `{ email: 1 }` index
+  // causes Mongoose's "Duplicate schema index" warning.
   adminSchema.index({ isActive: 1 });
 } catch (error) {
   // Ignore duplicate index errors
