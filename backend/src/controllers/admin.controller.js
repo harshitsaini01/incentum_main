@@ -139,19 +139,40 @@ const loginAdmin = asyncHandler(async (req, res) => {
 
 // Admin Logout
 const logoutAdmin = asyncHandler(async (req, res) => {
+  // Handle default admin case
+  if (req.admin._id === "default-admin-id") {
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+    };
+
+    return res
+      .status(200)
+      .clearCookie("adminToken", options)
+      .json(new ApiResponse(200, {}, "Admin logged out successfully"));
+  }
+
+  // For database admin, clear refresh token
   await Admin.findByIdAndUpdate(
     req.admin._id,
-    { $unset: { refreshToken: 1 } },
-    { new: true }
+    {
+      $unset: {
+        refreshToken: 1 // this removes the field from document
+      }
+    },
+    {
+      new: true
+    }
   );
 
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
   };
 
-  res
+  return res
     .status(200)
     .clearCookie("adminToken", options)
     .json(new ApiResponse(200, {}, "Admin logged out successfully"));
@@ -1145,6 +1166,45 @@ const downloadDocument = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+// Delete user
+const deleteUser = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  // Find and delete the user
+  const user = await User.findByIdAndDelete(userId);
+  
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  res.status(200).json(
+    new ApiResponse(200, { deletedUser: user }, "User deleted successfully")
+  );
+});
+
+// Delete application
+const deleteApplication = asyncHandler(async (req, res) => {
+  const { applicationId } = req.params;
+
+  // Try to find and delete from LoanApplication model first
+  let application = await LoanApplication.findByIdAndDelete(applicationId);
+  
+  // If not found, try the Form model
+  if (!application) {
+    application = await Form.findByIdAndDelete(applicationId);
+  }
+  
+  if (!application) {
+    throw new ApiError(404, "Application not found");
+  }
+
+  res.status(200).json(
+    new ApiResponse(200, { deletedApplication: application }, "Application deleted successfully")
+  );
+});
+
 module.exports = {
   registerAdmin,
   loginAdmin,
@@ -1159,5 +1219,7 @@ module.exports = {
   downloadApplicationPDF,
   createDefaultAdmin,
   downloadDocument,
-  serveDocument
+  serveDocument,
+  deleteUser,
+  deleteApplication
 }; 

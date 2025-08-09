@@ -13,7 +13,9 @@ const {
   downloadApplicationPDF,
   createDefaultAdmin,
   downloadDocument,
-  serveDocument
+  serveDocument,
+  deleteUser,
+  deleteApplication
 } = require("../controllers/admin.controller");
 const { verifyAdminJWT, checkPermission, requireSuperAdmin } = require("../middleware/adminAuth.middleware");
 
@@ -35,6 +37,7 @@ router.get("/dashboard/stats", checkPermission("view_statistics"), getDashboardS
 
 // User management routes
 router.get("/users", checkPermission("manage_users"), getAllUsers);
+router.delete("/users/:userId", checkPermission("manage_users"), deleteUser);
 
 // Loan application management routes
 router.get("/applications", checkPermission("read_applications"), getAllLoanApplications);
@@ -42,6 +45,7 @@ router.get("/applications/:applicationId", checkPermission("read_applications"),
 router.patch("/applications/:applicationId/status", checkPermission("update_applications"), updateLoanApplicationStatus);
 router.put("/applications/:applicationId", checkPermission("update_applications"), updateApplicationById);
 router.get("/applications/:applicationId/download", checkPermission("read_applications"), downloadApplicationPDF);
+router.delete("/applications/:applicationId", checkPermission("update_applications"), deleteApplication);
 
 // Download individual document
 router.get("/applications/:applicationId/documents/:documentType/:applicantIndex", checkPermission("read_applications"), downloadDocument);

@@ -17,6 +17,7 @@ const AdminDashboard = () => {
     rejected: 0,
     totalLoanAmount: 0
   });
+  const [deleteConfirm, setDeleteConfirm] = useState({ show: false, type: '', id: '', name: '' });
   const navigate = useNavigate();
 
   // Check admin authentication status
@@ -177,13 +178,51 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     try {
-                      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/admin/logout`, {}, {
-          withCredentials: true
-        });
-      navigate('/admin-login');
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/admin/logout`, {}, {
+        withCredentials: true
+      });
+      navigate('/admin/login');
     } catch (error) {
       console.error('Logout failed:', error);
-      navigate('/admin-login');
+      navigate('/admin/login');
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/admin/users/${userId}`, {
+        withCredentials: true
+      });
+      setUsers(users.filter(user => user._id !== userId));
+      setDeleteConfirm({ show: false, type: '', id: '', name: '' });
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Failed to delete user');
+    }
+  };
+
+  const handleDeleteApplication = async (applicationId) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/admin/applications/${applicationId}`, {
+        withCredentials: true
+      });
+      setApplications(applications.filter(app => app._id !== applicationId));
+      setDeleteConfirm({ show: false, type: '', id: '', name: '' });
+    } catch (error) {
+      console.error('Error deleting application:', error);
+      alert('Failed to delete application');
+    }
+  };
+
+  const showDeleteConfirmation = (type, id, name) => {
+    setDeleteConfirm({ show: true, type, id, name });
+  };
+
+  const confirmDelete = () => {
+    if (deleteConfirm.type === 'user') {
+      handleDeleteUser(deleteConfirm.id);
+    } else if (deleteConfirm.type === 'application') {
+      handleDeleteApplication(deleteConfirm.id);
     }
   };
 
@@ -538,6 +577,14 @@ const AdminDashboard = () => {
                                   <FiEdit className="w-3 h-3 mr-1" />
                                   Edit
                                 </button>
+                                <button 
+                                  onClick={() => showDeleteConfirmation('application', app._id, app.userId?.name || 'Unknown User')}
+                                  className="inline-flex items-center px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded transition-colors"
+                                  title="Delete Application"
+                                >
+                                  <FiTrash2 className="w-3 h-3 mr-1" />
+                                  Delete
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -579,7 +626,7 @@ const AdminDashboard = () => {
                   <div className="text-center py-12">
                     <FiUsers className="w-16 h-16 text-gray-500 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-white mb-2">No Users Found</h3>
-                                         <p className="text-gray-400">Click &ldquo;Load Users&rdquo; to fetch user data.</p>
+                    <p className="text-gray-400">Click &ldquo;Load Users&rdquo; to fetch user data.</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
@@ -603,6 +650,9 @@ const AdminDashboard = () => {
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                             Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                            Actions
                           </th>
                         </tr>
                       </thead>
@@ -628,6 +678,16 @@ const AdminDashboard = () => {
                               <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                 Active
                               </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                              <button 
+                                onClick={() => showDeleteConfirmation('user', user._id, user.name || 'Unknown User')}
+                                className="inline-flex items-center px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded transition-colors"
+                                title="Delete User"
+                              >
+                                <FiTrash2 className="w-3 h-3 mr-1" />
+                                Delete
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -783,6 +843,53 @@ const AdminDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm.show && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4 border border-slate-700">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="p-2 bg-red-600 rounded-lg">
+                <FiTrash2 className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Confirm Deletion</h3>
+                <p className="text-gray-400 text-sm">This action cannot be undone</p>
+              </div>
+            </div>
+            
+            <p className="text-gray-300 mb-6">
+              Are you sure you want to delete {deleteConfirm.type === 'user' ? 'user' : 'application'} 
+              <span className="font-semibold text-white"> "{deleteConfirm.name}"</span>?
+              {deleteConfirm.type === 'user' && (
+                <span className="block text-sm text-red-400 mt-2">
+                  This will permanently remove the user and all associated data from the database.
+                </span>
+              )}
+              {deleteConfirm.type === 'application' && (
+                <span className="block text-sm text-red-400 mt-2">
+                  This will permanently remove the application and all associated documents from the database.
+                </span>
+              )}
+            </p>
+            
+            <div className="flex items-center justify-end space-x-3">
+              <button
+                onClick={() => setDeleteConfirm({ show: false, type: '', id: '', name: '' })}
+                className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+              >
+                Delete {deleteConfirm.type === 'user' ? 'User' : 'Application'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
