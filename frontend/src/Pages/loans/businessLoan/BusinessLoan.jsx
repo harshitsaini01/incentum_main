@@ -1,11 +1,33 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion"; // Added motion for animation
 import EmiCalculator from "../../homePage/homecomponents/EmiCalculator";
 import BusinessAccordion from "./BusinessAccordion";
 import LoanNav from "../../../components/loanSec/LoanNav";
 import Button from "../../../components/loanSec/Button";
 
 export default function BusinessLoan() {
+  // Animation Variants
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  const slideInLeft = {
+    initial: { opacity: 0, x: -100 },
+    animate: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+  const slideInRight = {
+    initial: { opacity: 0, x: 100 },
+    animate: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+  const scaleIn = {
+    initial: { opacity: 0, scale: 0.8 },
+    animate: { opacity: 1, scale: 1, transition: { duration: 0.7 } },
+  };
+
   const [activeFeature, setActiveFeature] = useState(0);
 
   useEffect(() => {
@@ -15,31 +37,16 @@ export default function BusinessLoan() {
     return () => clearInterval(interval);
   }, []);
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 40 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
-  const slideInLeft = {
-    initial: { opacity: 0, x: -40 },
-    animate: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
-  const slideInRight = {
-    initial: { opacity: 0, x: 40 },
-    animate: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
   const premiumFeatures = [
     {
-      icon: "📈",
+      icon: "",
       title: "Competitive Rates",
       description: "Starting from 11.5% per annum",
       gradient: "from-blue-500 to-blue-600",
       bgGradient: "from-blue-50 to-blue-100"
     },
     {
-      icon: "⚡",
+      icon: "",
       title: "Quick Processing",
       description: "Approval in 48-72 hours",
       gradient: "from-emerald-500 to-emerald-600",
@@ -139,7 +146,7 @@ export default function BusinessLoan() {
         
         {/* Main Content */}
         <div className="relative z-10 pt-20 pb-16">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
               
               {/* Left Content */}
@@ -361,7 +368,7 @@ export default function BusinessLoan() {
                             repeatType: "reverse",
                             delay: index * 0.3
                           }}
-                          className="text-4xl mb-4"
+                          className="text-4xl mb-2"
                         >
                           {feature.icon}
                         </motion.div>
@@ -416,7 +423,7 @@ export default function BusinessLoan() {
           className="absolute bottom-10 right-10 w-24 h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full opacity-20"
         />
         
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-16 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -424,7 +431,7 @@ export default function BusinessLoan() {
             className="text-center mb-16"
           >
             <motion.h2 
-              className="text-4xl lg:text-5xl font-bold text-slate-800 mb-6"
+              className="text-3xl lg:text-4xl font-bold text-slate-800 mb-2"
               whileInView={{ 
                 scale: [1, 1.02, 1],
                 color: ["#1e293b", "#3b82f6", "#1e293b"]
@@ -437,10 +444,10 @@ export default function BusinessLoan() {
               initial={{ width: 0 }}
               whileInView={{ width: "5rem" }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="h-1 bg-gradient-to-r from-blue-600 to-blue-700 mx-auto mb-8 rounded-full"
+              className="h-1 bg-gradient-to-r from-blue-600 to-blue-700 mx-auto mb-4 rounded-full"
             ></motion.div>
             <motion.p 
-              className="text-xl text-slate-700 max-w-3xl mx-auto font-medium leading-relaxed"
+              className="text-lg text-slate-700 max-w-3xl mx-auto font-medium leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -458,11 +465,11 @@ export default function BusinessLoan() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.2, duration: 0.6 }}
                 whileHover={{ scale: 1.02, y: -5 }}
-                className="bg-white rounded-2xl p-8 shadow-xl border border-slate-200 hover:shadow-2xl hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 transition-all duration-300 relative overflow-hidden"
+                className="bg-white rounded-2xl p-4 shadow-xl border border-slate-200 hover:shadow-2xl hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 transition-all duration-300 relative overflow-hidden"
               >
-                <div className="relative z-10">
+                <div className="relative z-">
                   <motion.div 
-                    className="text-5xl mb-6"
+                    className="text-3xl mb-6"
                     animate={{ 
                       scale: [1, 1.1, 1],
                       rotate: [0, 10, -10, 0] 
@@ -476,8 +483,8 @@ export default function BusinessLoan() {
                   >
                     {item.icon}
                   </motion.div>
-                  <h3 className="text-2xl font-bold text-slate-800 mb-4">{item.title}</h3>
-                  <p className="text-slate-700 mb-6 leading-relaxed font-medium">{item.description}</p>
+                  <h3 className="text-2xl font-bold text-slate-800 ">{item.title}</h3>
+                  <p className="text-slate-700 leading-relaxed font-medium">{item.description}</p>
                   
                   <div className="space-y-3">
                     {item.features.map((feature, featureIndex) => (

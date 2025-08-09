@@ -1370,22 +1370,18 @@ const MortgageLoanForm = () => {
                 {renderStepContent()}
 
                 {/* Navigation Buttons */}
-                <div className="flex justify-between items-center mt-12 pt-8 border-t border-white/20">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-12 pt-8 border-t border-white/20">
                   <button
                     type="button"
                     onClick={prevStep}
                     disabled={currentStep === 1}
-                    className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
-                      currentStep === 1
-                        ? 'bg-white/5 text-gray-500 cursor-not-allowed'
-                        : 'bg-white/10 text-white hover:bg-white/20 shadow-lg hover:shadow-xl'
-                    }`}
+                    className="flex items-center space-x-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-white/10 text-white rounded-xl font-medium hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 w-full sm:w-auto justify-center sm:justify-start"
                   >
                     <FaArrowLeft className="w-4 h-4" />
                     <span>Previous</span>
                   </button>
 
-                  <div className="flex items-center space-x-2 text-sm text-gray-400">
+                  <div className="flex items-center space-x-2 text-sm text-gray-400 order-first sm:order-none">
                     <span>Step {currentStep} of {steps.length}</span>
                   </div>
 
@@ -1393,7 +1389,7 @@ const MortgageLoanForm = () => {
                     <button
                       type="button"
                       onClick={nextStep}
-                      className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-medium hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="flex items-center space-x-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-medium hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto justify-center sm:justify-start"
                     >
                       <span>Next</span>
                       <FaArrowRight className="w-4 h-4" />

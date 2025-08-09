@@ -139,7 +139,7 @@ export default function VehicleLoan() {
         
         {/* Main Content */}
         <div className="relative z-10 pt-20 pb-16">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
               
               {/* Left Content */}
@@ -164,7 +164,7 @@ export default function VehicleLoan() {
 
                 <motion.div {...fadeInUp} className="space-y-6">
                   <motion.h1 
-                    className="text-5xl lg:text-6xl font-bold leading-tight text-slate-800"
+                    className="text-3xl lg:text-4xl font-bold leading-tight text-slate-800"
                     whileInView={{ 
                       backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
                     }}
@@ -189,7 +189,7 @@ export default function VehicleLoan() {
 
                 <motion.p
                   {...fadeInUp}
-                  className="text-xl text-slate-700 leading-relaxed max-w-2xl font-medium"
+                  className="text-base text-slate-700 leading-relaxed max-w-2xl font-medium"
                 >
                   We know owning your dream car isn&apos;t just about the ride, it&apos;s about the freedom and joy that comes with it. Our AI-driven consultation is here to make that happen, without the stress.
                 </motion.p>
@@ -237,12 +237,12 @@ export default function VehicleLoan() {
                           repeatType: "reverse",
                           delay: index * 0.5
                         }}
-                        className="text-2xl mb-2"
+                        className="text-xl mb-2"
                       >
                         {indicator.icon}
                       </motion.div>
                       <motion.div 
-                        className="text-2xl lg:text-3xl font-bold text-blue-600 mb-1"
+                        className="text-xl lg:text-2xl font-bold text-blue-600 mb-1"
                         whileInView={{ 
                           scale: [1, 1.1, 1],
                           color: ["#2563eb", "#1d4ed8", "#2563eb"]
@@ -361,7 +361,7 @@ export default function VehicleLoan() {
                             repeatType: "reverse",
                             delay: index * 0.3
                           }}
-                          className="text-4xl mb-4"
+                          className="text-3xl mb-4"
                         >
                           {feature.icon}
                         </motion.div>
@@ -416,7 +416,7 @@ export default function VehicleLoan() {
           className="absolute bottom-10 right-10 w-24 h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full opacity-20"
         />
         
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-16 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -424,7 +424,7 @@ export default function VehicleLoan() {
             className="text-center mb-16"
           >
             <motion.h2 
-              className="text-4xl lg:text-5xl font-bold text-slate-800 mb-6"
+              className="text-2xl lg:text-3xl font-bold text-slate-800 mb-6"
               whileInView={{ 
                 scale: [1, 1.02, 1],
                 color: ["#1e293b", "#3b82f6", "#1e293b"]
@@ -440,7 +440,7 @@ export default function VehicleLoan() {
               className="h-1 bg-gradient-to-r from-blue-600 to-blue-700 mx-auto mb-8 rounded-full"
             ></motion.div>
             <motion.p 
-              className="text-xl text-slate-700 max-w-3xl mx-auto font-medium leading-relaxed"
+              className="text-base text-slate-700 max-w-3xl mx-auto font-medium leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -462,7 +462,7 @@ export default function VehicleLoan() {
               >
                 <div className="relative z-10">
                   <motion.div 
-                    className="text-5xl mb-6"
+                    className="text-3xl mb-4"
                     animate={{ 
                       scale: [1, 1.1, 1],
                       rotate: [0, 10, -10, 0] 
@@ -476,8 +476,8 @@ export default function VehicleLoan() {
                   >
                     {item.icon}
                   </motion.div>
-                  <h3 className="text-2xl font-bold text-slate-800 mb-4">{item.title}</h3>
-                  <p className="text-slate-700 mb-6 leading-relaxed font-medium">{item.description}</p>
+                  <h3 className="text-xl font-bold text-slate-800 mb-3">{item.title}</h3>
+                  <p className="text-slate-700 mb-4 leading-relaxed font-medium">{item.description}</p>
                   
                   <div className="space-y-3">
                     {item.features.map((feature, featureIndex) => (

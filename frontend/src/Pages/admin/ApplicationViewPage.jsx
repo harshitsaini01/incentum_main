@@ -783,21 +783,23 @@ const ApplicationViewPage = () => {
                                   const errorDiv = document.createElement('div');
                                   errorDiv.className = 'text-center p-4';
                                                                      errorDiv.innerHTML = `
-                                      <FiFileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                                       <p className="text-gray-600 mb-2">Image could not be loaded</p>
-                                      <a href="${downloadUrl}" download class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                                        <FiDownload className="w-4 h-4 mr-2" />
-                                        Download Document
-                                      </a>
-                                    `;
+                                <div class="flex flex-col items-center justify-center p-4">
+                                  <FiFileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                                  <p className="text-gray-600 mb-4 text-center">Image could not be loaded</p>
+                                  <a href="${downloadUrl}" download class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors w-auto">
+                                    <FiDownload className="w-4 h-4 mr-2" />
+                                    Download Document
+                                  </a>
+                                </div>
+                              `;
                                   e.target.parentNode.appendChild(errorDiv);
                                 }}
                               />
-                             <div className="absolute top-4 right-4">
+                             <div className="absolute top-4 right-4 z-10">
                                <a 
                                  href={downloadUrl} 
                                  download
-                                 className="inline-flex items-center px-3 py-2 bg-white bg-opacity-90 text-white rounded-lg hover:bg-opacity-100 transition-all shadow-lg"
+                                 className="inline-flex items-center justify-center px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-lg"
                                >
                                  <FiDownload className="w-4 h-4 mr-1" />
                                  Download
@@ -818,39 +820,41 @@ const ApplicationViewPage = () => {
                                   // Show error message
                                   const errorDiv = document.createElement('div');
                                   errorDiv.className = 'text-center p-4';
-                                                                     errorDiv.innerHTML = `
+                                  errorDiv.innerHTML = `
+                                    <div class="flex flex-col items-center justify-center p-4">
                                       <FiFileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                                      <p className="text-gray-600 mb-2">PDF could not be loaded</p>
-                                      <a href="${downloadUrl}" download class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                      <p className="text-gray-600 mb-4 text-center">PDF could not be loaded</p>
+                                      <a href="${downloadUrl}" download class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors w-auto">
                                         <FiDownload className="w-4 h-4 mr-2" />
                                         Download Document
                                       </a>
-                                    `;
+                                    </div>
+                                  `;
                                   e.target.parentNode.appendChild(errorDiv);
                                 }}
                               />
-                             <div className="absolute top-4 right-4">
-                               <a 
-                                 href={downloadUrl} 
-                                 download
-                                 className="inline-flex items-center px-3 py-2 bg-white bg-opacity-90 text-gray-700 rounded-lg hover:bg-opacity-100 transition-all shadow-lg"
-                               >
-                                 <FiDownload className="w-4 h-4 mr-1" />
-                                 Download
-                               </a>
-                             </div>
-                           </div>
-                         );
-                       } else {
+                              <div className="absolute top-4 right-4 z-10">
+                                <a 
+                                  href={downloadUrl} 
+                                  download
+                                  className="inline-flex items-center justify-center px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all shadow-lg"
+                                >
+                                  <FiDownload className="w-4 h-4 mr-1" />
+                                  Download
+                                </a>
+                              </div>
+                            </div>
+                          );
+                        } else {
                          return (
-                           <div className="text-center">
+                           <div className="flex flex-col items-center justify-center p-6">
                              <FiFileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                              <p className="text-gray-600 mb-2">Document Preview Not Available</p>
-                             <p className="text-sm text-gray-500 mb-4">File type: {fileExtension?.toUpperCase() || 'Unknown'}</p>
+                             <p className="text-gray-600 mb-2 text-center">Document Preview Not Available</p>
+                             <p className="text-sm text-gray-500 mb-4 text-center">File type: {fileExtension?.toUpperCase() || 'Unknown'}</p>
                              <a 
                                href={downloadUrl} 
                                download
-                               className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                               className="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                              >
                                <FiDownload className="w-4 h-4 mr-2" />
                                Download Document

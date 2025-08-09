@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Accordion,
     AccordionHeader,
@@ -9,39 +9,38 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoMdContacts } from "react-icons/io";
 import { TbListDetails } from "react-icons/tb";
 import { MdOutlineDataExploration } from "react-icons/md";
-import { motion } from "framer-motion";
 import "aos/dist/aos.css";
 import AOS from "aos";
 
-function VehicleAccordion({ type, openAccordion, handleAccordionClick }) {
+function VehicleLoan({ type, openAccordion, handleAccordionClick }) {
     const sections = {
         eligibility: [
             {
                 heading: "Credit Score Requirements",
                 content: "A credit score of 650+ significantly improves your approval chances for competitive interest rates. Our team works with applicants across all credit ranges, offering personalized solutions and guidance to strengthen your vehicle loan application.",
-                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Income Verification",
                 content: "Salaried professionals need minimum monthly income of ₹15,000 with 2+ years employment history. Self-employed individuals require stable business operations for 3+ years with consistent income documentation.",
-                icon: <IoDocumentTextOutline className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <IoDocumentTextOutline className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Age and Employment Guidelines",
                 content: "Applicants must be between 21-65 years at loan maturity. We offer flexible repayment terms from 1-7 years based on vehicle type and your financial profile for comfortable monthly payments.",
-                icon: <IoMdContacts className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <IoMdContacts className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Financial Assessment",
                 content: "Our comprehensive analysis includes debt-to-income ratio, existing financial commitments, and vehicle affordability to ensure sustainable repayment throughout your loan tenure.",
-                icon: <TbListDetails className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <TbListDetails className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
         ],
         documents: [
             {
                 heading: "Identity and Address Proof",
                 content: "Valid government-issued photo identification (Aadhaar, PAN, Passport, Driving License) and current address verification documents. We accept utility bills, bank statements, or rental agreements dated within the last 3 months.",
-                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Income Documentation",
@@ -51,68 +50,68 @@ function VehicleAccordion({ type, openAccordion, handleAccordionClick }) {
             {
                 heading: "Vehicle Documentation",
                 content: "Pro-forma invoice from authorized dealer, vehicle registration certificate (for used vehicles), insurance documents, and any existing loan closure certificates. Our team ensures thorough verification.",
-                icon: <IoMdContacts className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <IoMdContacts className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Additional Requirements",
                 content: "Recent passport-size photographs, processing fee payment confirmation, and any lender-specific documentation. Our relationship managers provide complete guidance throughout the process.",
-                icon: <TbListDetails className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <TbListDetails className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
         ],
-        apply:[
+        apply: [
             {
                 heading: "Online Application",
                 content: "Complete our streamlined digital application in under 10 minutes. Our user-friendly platform guides you through each step with real-time validation and helpful prompts for accurate information submission.",
-                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Quick Pre-Assessment",
                 content: "Receive preliminary approval status within 30 minutes through our efficient evaluation system. Get indicative loan amount, interest rate options, and tenure recommendations tailored to your profile.",
-                icon: <IoDocumentTextOutline className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <IoDocumentTextOutline className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Document Processing",
                 content: "Our dedicated team assists with document collection and verification. Advanced digital processing ensures accuracy and faster turnaround times for your vehicle loan application.",
-                icon: <IoMdContacts className="w-7 h-6 lg:w-6  lg:h-6"/>,
+                icon: <IoMdContacts className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Approval and Disbursement",
                 content: "Final loan approval typically completed within 24-48 hours. Funds are disbursed directly to the dealer with complete transparency. Track your application status through our portal.",
-                icon: <TbListDetails className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <TbListDetails className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
         ],
-        offer:[
+        offer: [
             {
                 heading: "Competitive Interest Rates",
                 content: "Access market-leading interest rates starting from 8.5% per annum for new vehicles. Choose between fixed and floating rate options based on your financial strategy and vehicle type.",
-                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <BsSpeedometer2 className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Flexible Loan Amount",
                 content: "Borrow up to 90% of vehicle's on-road price for new vehicles and 85% for used vehicles. Higher loan amounts available for premium vehicles and qualified applicants with excellent credit profiles.",
-                icon: <IoDocumentTextOutline className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <IoDocumentTextOutline className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Extended Repayment Terms",
                 content: "Choose repayment tenure from 1-7 years with the flexibility to prepay without penalties after 12 months. Customize your EMI structure to match your financial planning and cash flow requirements.",
-                icon: <IoMdContacts className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <IoMdContacts className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Value-Added Services",
                 content: "Benefit from our comprehensive service package including vehicle valuation, insurance assistance, extended warranty options, and dedicated relationship management throughout your loan journey.",
-                icon: <TbListDetails className="w-7 h-6 lg:w-6  lg:h-6" />,
+                icon: <TbListDetails className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
             {
                 heading: "Quick Processing",
                 content: "Experience industry-leading processing times with most applications approved within 24-48 hours. Our digital-first approach ensures minimal delays in your vehicle purchase journey.",
-                icon: <MdOutlineDataExploration className="w-7 h-6 lg:w-6  lg:h-6"/>,
+                icon: <MdOutlineDataExploration className="w-7 h-6 lg:w-6 lg:h-6" />,
             },
         ],
     };
 
     const titles = {
-        eligibility: "Eligibility Requirements",
-        documents: "Required Documentation",
+        eligibility: "Eligibility Criteria",
+        documents: "Documents Required",
         apply: "Application Process",
         offer: "Loan Features & Benefits",
     };
@@ -126,11 +125,11 @@ function VehicleAccordion({ type, openAccordion, handleAccordionClick }) {
             "Our streamlined documentation process makes your application experience smooth.",
             "Here's what you'll need to have ready for a hassle-free vehicle loan process."
         ],
-        apply:[
+        apply: [
             "Follow our simple step-by-step application process designed for your convenience.",
             "From application to disbursement, we make your vehicle loan straightforward and transparent."
         ],
-        offer:[
+        offer: [
             "Discover the comprehensive benefits and features of our vehicle loan products.",
             "We're committed to providing value at every step of your vehicle financing journey."
         ]
@@ -139,193 +138,76 @@ function VehicleAccordion({ type, openAccordion, handleAccordionClick }) {
     const images = {
         eligibility: "/vehicleloanimg/Eligibility.png",
         documents: "/commonloanimg/documentrequired.png",
-        apply:"/vehicleloanimg/apply.png",
-        offer:"/commonloanimg/offer.png"
+        apply: "/vehicleloanimg/apply.png",
+        offer: "/commonloanimg/offer.png"
     };
 
-     useEffect(() => {
-            AOS.init({
-                duration: 1000, 
-                once: true, 
-            });
-        }, []);
-    
+    useEffect(() => {
+        AOS.init({
+            duration: 1000, 
+            once: true, 
+        });
+    }, []);
 
-        return (
-            <div className="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden" id={type} data-accordion-type={type}>
-                {/* Enhanced background pattern */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-blue-800/30 to-blue-900/50"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-blue-900/20"></div>
-                
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                        {/* Left Content */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="space-y-8"
-                        >
-                            <div className="space-y-6">
-                                <motion.h1 
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5 }}
-                                    className="text-4xl lg:text-5xl font-bold text-white drop-shadow-lg"
+    return (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-0 mt-2" id={type}>
+            <div className="mt-[10px] lg:mt-[25px] mx-6 lg:ml-[120px]" data-aos="fade-right">
+                <h1 className="text-[40px] md:ml-[10px] lg:text-[45px] font-bold heading">{titles[type]}</h1>
+                <p className="text-[18px] md:ml-[10px] lg:text-[18px] text-white font-medium leading-[30px] lg:leading-[35px]">
+                    {descriptions[type][0]}
+                </p>
+                <p className="text-[18px] md:ml-[10px] text-white lg:text-[18px] font-medium leading-[28px] lg:leading-[25px]">
+                    {descriptions[type][1]}
+                </p>
+                <div className="mt-6 lg:mt-8 max-w-full lg:w-[80%] md:w-[80%] w-full">
+                    {sections[type].map((section, index) => {
+                        const accordionKey = `${type}-${index + 1}`;
+                        return (
+                            <Accordion
+                                key={accordionKey}
+                                open={openAccordion === accordionKey}
+                                className={`rounded-xl mb-6 pb-2 transition-all duration-500 ease-in-out hover:scale-[1.03] hover:shadow-[0_0_12px_rgba(255,255,255,0.4)] ${openAccordion === accordionKey
+                                    ? "border-b-[4px] border-auButtomColor"
+                                    : "border-b-[4px] border-white"
+                                } bg-auColor`}
+                            >
+                                <AccordionHeader
+                                    onClick={() => handleAccordionClick(accordionKey)}
+                                    className="px-6 pt-4 pb-2 font-medium cursor-pointer text-white flex justify-start items-center border-none"
                                 >
-                                    {titles[type]}
-                                </motion.h1>
-                                
-                                <div className="h-1 w-16 bg-gradient-to-r from-yellow-400 to-yellow-300 rounded-full shadow-lg"></div>
-                                
-                                <div className="space-y-4">
-                                    <motion.p 
-                                        initial={{ opacity: 0, y: 15 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.5, delay: 0.1 }}
-                                        className="text-lg text-white leading-relaxed font-medium drop-shadow-sm"
-                                    >
-                                        {descriptions[type][0]}
-                                    </motion.p>
-                                    <motion.p 
-                                        initial={{ opacity: 0, y: 15 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.5, delay: 0.2 }}
-                                        className="text-lg text-blue-100 leading-relaxed drop-shadow-sm"
-                                    >
-                                        {descriptions[type][1]}
-                                    </motion.p>
+                                    <div>{section.icon}</div>
+                                    <h2 className="ml-4 lg:ml-5 text-[19px] md:text-[20px] font-bold">
+                                        {section.heading}
+                                    </h2>
+                                </AccordionHeader>
+                                <div
+                                    style={{
+                                        maxHeight: openAccordion === accordionKey ? "500px" : "0",
+                                        overflow: "hidden",
+                                        transition: "max-height 0.5s ease-in-out",
+                                    }}
+                                >
+                                    <AccordionBody className="px-6 lg:px-16 pb-4 lg:pb-2 text-white text-[20px] lg:text-[17px]">
+                                        {section.content}
+                                    </AccordionBody>
                                 </div>
-                            </div>
-
-                            {/* Accordion */}
-                            <div className="space-y-4">
-                                {sections[type].map((section, index) => {
-                                    const accordionKey = `${type}-${index + 1}`;
-                                    const isOpen = openAccordion === accordionKey;
-                                    
-                                    return (
-                                        <motion.div
-                                            key={accordionKey}
-                                            initial={{ opacity: 0, y: 15 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                                            className="group"
-                                        >
-                                            <Accordion
-                                                open={isOpen}
-                                                className={`rounded-xl border transition-all duration-300 ${
-                                                    isOpen 
-                                                        ? 'bg-white/25 border-white/50 shadow-2xl backdrop-blur-lg' 
-                                                        : 'bg-white/15 border-white/30 hover:bg-white/20 hover:border-white/40 backdrop-blur-lg'
-                                                }`}
-                                            >
-                                                <AccordionHeader
-                                                    onClick={() => handleAccordionClick(accordionKey)}
-                                                    className="px-6 py-4 font-medium cursor-pointer text-white flex items-center gap-4 border-none hover:bg-white/10 transition-all duration-300"
-                                                >
-                                                    <motion.div 
-                                                        whileHover={{ scale: 1.1, rotate: 5 }}
-                                                        animate={isOpen ? { 
-                                                            scale: [1, 1.1, 1],
-                                                            rotate: [0, 10, -10, 0] 
-                                                        } : {}}
-                                                        transition={{ 
-                                                            duration: 2, 
-                                                            repeat: isOpen ? Infinity : 0, 
-                                                            repeatType: "reverse" 
-                                                        }}
-                                                        className="p-3 rounded-xl bg-gradient-to-br from-white/30 to-white/20 border border-white/40 backdrop-blur-sm shadow-lg"
-                                                    >
-                                                        {section.icon}
-                                                    </motion.div>
-                                                    <div className="flex-1 text-left">
-                                                        <h3 className="text-lg font-bold text-white group-hover:text-yellow-300 transition-colors drop-shadow-sm">
-                                                            {section.heading}
-                                                        </h3>
-                                                    </div>
-                                                    <motion.div
-                                                        animate={{ rotate: isOpen ? 45 : 0 }}
-                                                        transition={{ duration: 0.3 }}
-                                                        whileHover={{ scale: 1.1 }}
-                                                        className="w-8 h-8 rounded-full bg-white/25 border border-white/40 flex items-center justify-center backdrop-blur-sm"
-                                                    >
-                                                        <span className="text-white font-bold">+</span>
-                                                    </motion.div>
-                                                </AccordionHeader>
-                                                
-                                                <motion.div
-                                                    initial={false}
-                                                    animate={{ 
-                                                        height: isOpen ? "auto" : 0,
-                                                        opacity: isOpen ? 1 : 0
-                                                    }}
-                                                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                                                    className="overflow-hidden"
-                                                >
-                                                    <AccordionBody className="px-6 pb-6 pt-0">
-                                                        <motion.div 
-                                                            initial={{ opacity: 0, y: 10 }}
-                                                            animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                                                            transition={{ duration: 0.3, delay: 0.1 }}
-                                                            className="pl-16"
-                                                        >
-                                                            <p className="text-blue-100 leading-relaxed font-medium drop-shadow-sm">
-                                                                {section.content}
-                                                            </p>
-                                                        </motion.div>
-                                                    </AccordionBody>
-                                                </motion.div>
-                                            </Accordion>
-                                        </motion.div>
-                                    );
-                                })}
-                            </div>
-                        </motion.div>
-
-                        {/* Right Image */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="relative flex justify-center lg:justify-end"
-                        >
-                            <div className="relative">
-                                <motion.div
-                                    whileHover={{ scale: 1.02, y: -5 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="relative z-10"
-                                >
-                                    <img
-                                        src={images[type]}
-                                        alt={`${titles[type]} Illustration`}
-                                        className="w-full max-w-md lg:max-w-lg rounded-2xl shadow-2xl border-2 border-white/30"
-                                    />
-                                </motion.div>
-                                
-                                {/* Floating Element */}
-                                <motion.div
-                                    animate={{ y: [-8, 8, -8] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-xl border-2 border-white z-20"
-                                >
-                                    <motion.span
-                                        className="flex items-center gap-2"
-                                    >
-                                        <span className="text-lg">✨</span>
-                                        <span className="text-white font-bold">Professional</span>
-                                    </motion.span>
-                                </motion.div>
-                            </div>
-                        </motion.div>
-                    </div>
+                            </Accordion>
+                        );
+                    })}
                 </div>
             </div>
-        );
-    }
-        
+            <div className="flex justify-center lg:justify-start" data-aos="fade-left">
+                <img
+                    src={images[type]}
+                    alt={`${titles[type]} Illustration`}
+                    className="mt-[30px] lg:mt-[160px] lg:ml-[90px] w-[370px] h-[320px] md:w-[480px] md:h-[380px] imgBorder my-4 rounded-lg hover:scale-[1.05] hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-300 ease-out"
+                />
+            </div>
+        </div>
+    );
+}
 
-export default function App() { 
+export default function VehicleAccordion() { 
     const [openAccordion, setOpenAccordion] = useState(null);
 
     const handleAccordionClick = (key) => {
@@ -334,10 +216,10 @@ export default function App() {
 
     return (
         <div>
-            <VehicleAccordion type="eligibility" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
-            <VehicleAccordion type="documents" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
-            <VehicleAccordion type="apply" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
-            <VehicleAccordion type="offer" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
+            <VehicleLoan type="eligibility" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
+            <VehicleLoan type="documents" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
+            <VehicleLoan type="apply" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
+            <VehicleLoan type="offer" openAccordion={openAccordion} handleAccordionClick={handleAccordionClick} />
         </div>
     );
 }

@@ -1,131 +1,243 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  FaWhatsapp,
-  FaEnvelope,
-  FaPhoneAlt,
-  FaTelegramPlane,
-  FaCommentDots,
-} from "react-icons/fa";
+import React, { useState, useEffect, useRef } from 'react';
+import { FaCommentDots, FaTimes, FaPaperPlane, FaWhatsapp, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export default function AllInOneChat() {
+const AllInOneChat = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const chatWidgetRef = useRef(null); // Create a ref
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [activeTab, setActiveTab] = useState('chat');
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([
+    { id: 1, text: 'Hello! How can we help you today?', sender: 'bot', timestamp: new Date() }
+  ]);
+  const messagesEndRef = useRef(null);
+
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
+    if (!isOpen) {
+      setIsMinimized(false);
+    }
+  };
+
+  const toggleMinimize = () => {
+    setIsMinimized(!isMinimized);
+  };
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (message.trim() === '') return;
+    
+    // Add user message
+    const newMessage = {
+      id: messages.length + 1,
+      text: message,
+      sender: 'user',
+      timestamp: new Date()
+    };
+    
+    setMessages([...messages, newMessage]);
+    setMessage('');
+    
+    // Simulate bot response
+    setTimeout(() => {
+      const botResponse = {
+        id: messages.length + 2,
+        text: 'Thank you for your message. Our team will get back to you shortly.',
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, botResponse]);
+    }, 1000);
+  };
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        chatWidgetRef.current &&
-      !chatWidgetRef.current.contains(event.target)
-      ) {
-        // Click is outside the widget
-        setIsOpen(false);
-      }
-    };
-
-    if (isOpen) {
-      // Add the event listener only when the widget is open
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      // Remove the listener when the widget is closed
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    // Clean up the listener when the component unmounts or isOpen changes
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
-    <div className="fixed bottom-5 left-5 z-50"> {/* Added z-50 for higher z-index */}
-      {/* Chat Widget Button */}
+    <div className="fixed bottom-6 right-6 z-[9999] font-sans">
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: 100, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 100, scale: 0.8 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+            className={`bg-white text-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col ${isMinimized ? 'h-16' : 'h-[500px] w-80'} transition-all duration-300 border border-gray-200`}
+            style={{
+              background: 'white',
+              '--tw-bg-opacity': '1',
+              backgroundColor: 'rgba(255, 255, 255, var(--tw-bg-opacity))',
+              '--tw-backdrop-blur': 'none',
+              backdropFilter: 'none',
+              WebkitBackdropFilter: 'none'
+            }}
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex justify-between items-center shadow-sm">
+              <div className="flex items-center">
+                <FaCommentDots className="mr-2" />
+                <h3 className="font-semibold">Chat with Us</h3>
+              </div>
+              <div className="flex space-x-2">
+                <button 
+                  onClick={toggleMinimize} 
+                  className="text-white hover:bg-blue-700 p-1 rounded-full transition-colors"
+                  aria-label={isMinimized ? 'Maximize' : 'Minimize'}
+                >
+                  {isMinimized ? '+' : '−'}
+                </button>
+                <button 
+                  onClick={toggleChat} 
+                  className="text-white hover:bg-blue-700 p-1 rounded-full transition-colors"
+                  aria-label="Close chat"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+            </div>
+
+            {!isMinimized && (
+              <>
+                {/* Tabs */}
+                <div className="flex border-b border-gray-200">
+                  <button 
+                    className={`flex-1 py-3 text-sm font-medium ${activeTab === 'chat' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                    onClick={() => setActiveTab('chat')}
+                  >
+                    Chat
+                  </button>
+                  <button 
+                    className={`flex-1 py-3 text-sm font-medium ${activeTab === 'contact' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                    onClick={() => setActiveTab('contact')}
+                  >
+                    Contact
+                  </button>
+                </div>
+
+                {/* Chat Content */}
+                <div className="flex-1 overflow-y-auto p-4 bg-white" style={{ backgroundColor: 'white' }}>
+                  {activeTab === 'chat' ? (
+                    <div className="space-y-4">
+                      {messages.map((msg) => (
+                        <div 
+                          key={msg.id} 
+                          className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                        >
+                          <div 
+                            className={`max-w-[80%] rounded-lg p-3 shadow-sm ${msg.sender === 'user' 
+                              ? 'bg-blue-600 text-black rounded-br-none' 
+                              : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none shadow'}`}
+                          >
+                            <p className="text-sm">{msg.text}</p>
+                            <p className="text-xs opacity-70 mt-1 text-right">
+                              {formatTime(new Date(msg.timestamp))}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                      <div ref={messagesEndRef} />
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="bg-white p-4 rounded-lg border border-gray-200">
+                        <h4 className="font-semibold text-gray-800 mb-3">Contact Options</h4>
+                        
+                        <a 
+                          href="https://wa.me/yourwhatsappnumber" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center p-3 rounded-lg bg-green-50 text-green-700 hover:bg-green-100 transition-colors mb-2"
+                        >
+                          <FaWhatsapp className="text-green-500 mr-3 text-xl" />
+                          <div>
+                            <p className="font-medium">WhatsApp</p>
+                            <p className="text-xs text-gray-500">Chat with us on WhatsApp</p>
+                          </div>
+                        </a>
+                        
+                        <a 
+                          href="tel:+1234567890" 
+                          className="flex items-center p-3 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors mb-2"
+                        >
+                          <FaPhone className="text-blue-500 mr-3 text-xl" />
+                          <div>
+                            <p className="font-medium">Call Us</p>
+                            <p className="text-xs text-gray-500">+1 (234) 567-890</p>
+                          </div>
+                        </a>
+                        
+                        <a 
+                          href="mailto:support@incentum.com" 
+                          className="flex items-center p-3 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors"
+                        >
+                          <FaEnvelope className="text-purple-500 mr-3 text-xl" />
+                          <div>
+                            <p className="font-medium">Email Us</p>
+                            <p className="text-xs text-gray-500">support@incentum.com</p>
+                          </div>
+                        </a>
+                      </div>
+                      
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <h4 className="font-semibold text-blue-800 mb-2">Business Hours</h4>
+                        <p className="text-sm text-gray-700">
+                          Monday - Friday: 9:00 AM - 6:00 PM<br />
+                          Saturday: 10:00 AM - 4:00 PM<br />
+                          Sunday: Closed
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Message Input */}
+                {activeTab === 'chat' && (
+                  <form onSubmit={handleSendMessage} className="p-3 border-t border-gray-200 bg-white shadow-inner">
+                    <div className="flex items-center">
+                      <input
+                        type="text"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Type your message..."
+                        className="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700"
+                        autoComplete="off"
+                      />
+                      <button 
+                        type="submit" 
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition-colors"
+                        disabled={!message.trim()}
+                      >
+                        <FaPaperPlane />
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Chat Toggle Button */}
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-black text-white rounded-full flex items-center px-5 py-3 shadow-lg hover:bg-gray-800 transition-all duration-300 transform hover:scale-105"
+        <motion.button
+          onClick={toggleChat}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 z-50"
+          aria-label="Open chat"
         >
-          <FaCommentDots className="text-xl mr-2 animate-bounce" />
-          <span>Talk to us</span>
-          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse ml-2"></div>
-        </button>
-      )}
-
-      {/* Chat Box */}
-      {isOpen && (
-        <div
-          className="relative w-80 bg-white rounded-xl shadow-lg border border-gray-300 animate-slide-in"
-          style={{ animationDuration: "0.5s" }}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-300">
-            <div className="flex items-center">
-              <img
-                src="/customercareimg.webp"
-                alt="Customer Care"
-                className="w-10 h-10"
-              />
-              <div className="ml-3">
-                <h3 className="font-bold text-gray-800">Customer care</h3>
-                <p className="text-green-500 text-sm">Online</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-gray-500 hover:text-gray-800 transition-transform duration-300 transform hover:rotate-90"
-            >
-              &#10005;
-            </button>
-          </div>
-
-          {/* Chat Body */}
-          <div className="p-4">
-            <div className="flex items-start mb-3">
-              <img
-                src="/customercareimg.webp"
-                className="w-8 h-8 rounded-full mr-2"
-              />
-              <div className="bg-gray-100 rounded-lg p-3 animate-fade-in">
-                <p className="text-gray-800">Hi there 👋</p>
-                <p className="text-gray-800">How can I help you?</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Chat Actions */}
-          <div className="flex justify-around p-4 border-t border-gray-300">
-            {/* WhatsApp */}
-            <a
-              href="https://wa.me/918767836233"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-16 h-12 bg-green-500 rounded-xl flex items-center justify-center shadow hover:bg-green-600 transition-all duration-300 transform hover:scale-110"
-            >
-              <FaWhatsapp className="text-white text-xl" />
-            </a>
-            {/* Email */}
-            <a
-              href="mailto:services@incentum.loans"
-              className="w-16 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow hover:bg-blue-600 transition-all duration-300 transform hover:scale-110"
-            >
-              <FaEnvelope className="text-white text-xl" />
-            </a>
-            {/* Phone */}
-            <a
-              href="tel:+918767836233"
-              className="w-16 h-12 bg-green-600 rounded-xl flex items-center justify-center shadow hover:bg-green-700 transition-all duration-300 transform hover:scale-110"
-            >
-              <FaPhoneAlt className="text-white text-xl" />
-            </a>
-            {/* Telegram */}
-            {/* <a
-              href="https://t.me/8767836233"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-16 h-12 bg-blue-400 rounded-xl flex items-center justify-center shadow hover:bg-blue-500 transition-all duration-300 transform hover:scale-110"
-            >
-              <FaTelegramPlane className="text-white text-xl" />
-            </a> */}
-          </div>
-        </div>
+          <FaCommentDots className="text-xl" />
+        </motion.button>
       )}
     </div>
   );
-}
+};
+
+export default AllInOneChat;

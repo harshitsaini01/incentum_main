@@ -39,7 +39,9 @@ const CoApplicantFlow = ({ onComplete, onCancel, existingData = null, title = "A
       years_in_business: '',
       years_of_itr_filing: '',
       annual_income: '',
-      business_address: ''
+      business_address: '',
+      firm_type: '',
+      business_designation: ''
     },
     documents: existingData?.documents || {
       panCard: null,
@@ -341,6 +343,46 @@ const CoApplicantFlow = ({ onComplete, onCancel, existingData = null, title = "A
           />
         </div>
 
+        <div>
+          <label className={labelStyle}>Qualification</label>
+          <select
+            value={coApplicantData.personalDetails.qualification}
+            onChange={(e) => handleDataChange({
+              personalDetails: {
+                ...coApplicantData.personalDetails,
+                qualification: e.target.value
+              }
+            })}
+            className={selectStyle}
+          >
+            <option value="">Select Qualification</option>
+            <option value="Graduate">Graduate</option>
+            <option value="Post Graduate">Post Graduate</option>
+            <option value="Professional">Professional</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <div>
+          <label className={labelStyle}>Residence Type</label>
+          <select
+            value={coApplicantData.personalDetails.residence_type}
+            onChange={(e) => handleDataChange({
+              personalDetails: {
+                ...coApplicantData.personalDetails,
+                residence_type: e.target.value
+              }
+            })}
+            className={selectStyle}
+          >
+            <option value="">Select Residence Type</option>
+            <option value="Owned">Owned</option>
+            <option value="Rented">Rented</option>
+            <option value="Parental">Parental</option>
+            <option value="Company Provided">Company Provided</option>
+          </select>
+        </div>
+
         <div className="md:col-span-2">
           <label className={labelStyle}>Permanent Address</label>
           <textarea
@@ -419,6 +461,27 @@ const CoApplicantFlow = ({ onComplete, onCancel, existingData = null, title = "A
             </div>
 
             <div>
+              <label className={labelStyle}>Organization Type</label>
+              <select
+                value={coApplicantData.employmentDetails.organisation_type}
+                onChange={(e) => handleDataChange({
+                  employmentDetails: {
+                    ...coApplicantData.employmentDetails,
+                    organisation_type: e.target.value
+                  }
+                })}
+                className={selectStyle}
+              >
+                <option value="">Select Organization Type</option>
+                <option value="Government">Government</option>
+                <option value="Private">Private</option>
+                <option value="Public Sector">Public Sector</option>
+                <option value="MNC">MNC</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+
+            <div>
               <label className={labelStyle}>Designation</label>
               <input
                 type="text"
@@ -488,6 +551,47 @@ const CoApplicantFlow = ({ onComplete, onCancel, existingData = null, title = "A
             </div>
 
             <div>
+              <label className={labelStyle}>Firm Type</label>
+              <select
+                value={coApplicantData.employmentDetails.firm_type}
+                onChange={(e) => handleDataChange({
+                  employmentDetails: {
+                    ...coApplicantData.employmentDetails,
+                    firm_type: e.target.value
+                  }
+                })}
+                className={selectStyle}
+              >
+                <option value="">Select Firm Type</option>
+                <option value="Proprietorship">Proprietorship</option>
+                <option value="Partnership">Partnership</option>
+                <option value="Private Limited">Private Limited</option>
+                <option value="LLP">LLP</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+
+            <div>
+              <label className={labelStyle}>Business Designation</label>
+              <select
+                value={coApplicantData.employmentDetails.business_designation}
+                onChange={(e) => handleDataChange({
+                  employmentDetails: {
+                    ...coApplicantData.employmentDetails,
+                    business_designation: e.target.value
+                  }
+                })}
+                className={selectStyle}
+              >
+                <option value="">Select Business Designation</option>
+                <option value="Proprietor">Proprietor</option>
+                <option value="Partner">Partner</option>
+                <option value="Director">Director</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+
+            <div>
               <label className={labelStyle}>Designation/Role</label>
               <input
                 type="text"
@@ -500,6 +604,40 @@ const CoApplicantFlow = ({ onComplete, onCancel, existingData = null, title = "A
                 })}
                 className={inputStyle}
                 placeholder="Enter designation/role"
+              />
+            </div>
+
+            <div>
+              <label className={labelStyle}>Years in Business</label>
+              <input
+                type="number"
+                value={coApplicantData.employmentDetails.years_in_business}
+                onChange={(e) => handleDataChange({
+                  employmentDetails: {
+                    ...coApplicantData.employmentDetails,
+                    years_in_business: e.target.value
+                  }
+                })}
+                className={inputStyle}
+                placeholder="Enter years in business"
+                min="0"
+              />
+            </div>
+
+            <div>
+              <label className={labelStyle}>Years of ITR Filing</label>
+              <input
+                type="number"
+                value={coApplicantData.employmentDetails.years_of_itr_filing}
+                onChange={(e) => handleDataChange({
+                  employmentDetails: {
+                    ...coApplicantData.employmentDetails,
+                    years_of_itr_filing: e.target.value
+                  }
+                })}
+                className={inputStyle}
+                placeholder="Enter years of ITR filing"
+                min="0"
               />
             </div>
 

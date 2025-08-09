@@ -139,7 +139,7 @@ const saveStepData = asyncHandler(async (req, res) => {
         }
         
         // Skip empty strings for enum fields to avoid validation errors
-        if (enumFields.includes(key) && value === '') {
+        if (enumFields.includes(key) && (value === '' || value === null || value === undefined)) {
           console.log(`⚠️ Skipping enum field ${key} with empty value`);
           return; // Don't include empty enum fields
         }
@@ -229,7 +229,7 @@ const saveStepData = asyncHandler(async (req, res) => {
         break;
         
               case 5: // Co-Applicants
-          if (stepData.coApplicants) {
+        if (stepData.coApplicants) {
           // Special cleaning for co-applicants - preserve structure but clean enum fields
           const cleanedCoApplicants = stepData.coApplicants.map(coApplicant => {
             // Clean personal details but preserve structure and map field names
@@ -237,7 +237,7 @@ const saveStepData = asyncHandler(async (req, res) => {
             if (coApplicant.personalDetails) {
               Object.keys(coApplicant.personalDetails).forEach(key => {
                 const value = coApplicant.personalDetails[key];
-                // Only skip undefined, null, and "undefined" strings
+                // Skip undefined, null, "undefined" strings, and empty strings for enum fields
                 if (value !== undefined && value !== null && value !== 'undefined') {
                   // Map field names to match schema
                   let mappedKey = key;
@@ -249,6 +249,14 @@ const saveStepData = asyncHandler(async (req, res) => {
                   if (key === 'marital_status') mappedKey = 'maritalStatus';
                   if (key === 'pan_number') mappedKey = 'panNumber';
                   if (key === 'residence_type') mappedKey = 'residenceType';
+                  
+                  // Skip empty strings for enum fields
+                  const enumFields = ['gender', 'qualification', 'maritalStatus', 'residenceType'];
+                  if (enumFields.includes(mappedKey) && value === '') {
+                    console.log(`⚠️ Skipping co-applicant enum field ${mappedKey} with empty value`);
+                    return;
+                  }
+                  
                   if (key === 'permanent_address') {
                     // Handle permanent address as nested object
                     if (!cleanedPersonalDetails.permanentAddress) {
@@ -288,7 +296,7 @@ const saveStepData = asyncHandler(async (req, res) => {
             if (coApplicant.employmentDetails) {
               Object.keys(coApplicant.employmentDetails).forEach(key => {
                 const value = coApplicant.employmentDetails[key];
-                // Only skip undefined, null, and "undefined" strings
+                // Skip undefined, null, "undefined" strings, and empty strings for enum fields
                 if (value !== undefined && value !== null && value !== 'undefined') {
                   // Map field names to match schema
                   let mappedKey = key;
@@ -314,6 +322,13 @@ const saveStepData = asyncHandler(async (req, res) => {
                   if (key === 'firm_registration_date') mappedKey = 'firmRegistrationDate';
                   if (key === 'business_designation') mappedKey = 'businessDesignation';
                   
+                  // Skip empty strings for enum fields
+                  const enumFields = ['employmentType', 'organisationType', 'firmType', 'businessDesignation'];
+                  if (enumFields.includes(mappedKey) && value === '') {
+                    console.log(`⚠️ Skipping co-applicant employment enum field ${mappedKey} with empty value`);
+                    return;
+                  }
+                  
                   cleanedEmploymentDetails[mappedKey] = value;
                 }
               });
@@ -326,9 +341,24 @@ const saveStepData = asyncHandler(async (req, res) => {
             };
           });
           
+          // Apply enum field cleaning to co-applicants
+          const finalCleanedCoApplicants = cleanedCoApplicants.map(coApplicant => {
+            // Clean enum fields in personal details
+            const cleanedPersonalDetails = cleanEnumFields(coApplicant.personalDetails || {});
+            
+            // Clean enum fields in employment details
+            const cleanedEmploymentDetails = cleanEnumFields(coApplicant.employmentDetails || {});
+            
+            return {
+              ...coApplicant,
+              personalDetails: cleanedPersonalDetails,
+              employmentDetails: cleanedEmploymentDetails
+            };
+          });
+          
           // Filter out empty co-applicants (no name and no phone)
           // Handle both naming conventions: fullName/full_name and phoneNumber/mobile_number
-          application.coApplicants = cleanedCoApplicants.filter(co => {
+          application.coApplicants = finalCleanedCoApplicants.filter(co => {
             if (!co || !co.personalDetails) {
               return false;
             }

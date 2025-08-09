@@ -1,6 +1,8 @@
 import HeroSection from './homecomponents/HeroSection';
 import FeaturesSection from './homecomponents/FeaturesSection';
 import BankingSection from './homecomponents/BankingSection';
+import TestimonialsSection from './homecomponents/TestimonialsSection';
+import FAQSection from './homecomponents/FAQSection';
 
 const HomePage = () => {
   return (
@@ -57,6 +59,12 @@ const HomePage = () => {
         </div>
         <div className="animate-slide-up" style={{animationDelay: '0.6s'}}>
           <BankingSection />
+        </div>
+        <div className="animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+          <TestimonialsSection />
+        </div>
+        <div className="animate-slide-up" style={{animationDelay: '1.0s'}}>
+          <FAQSection />
         </div>
       </div>
       

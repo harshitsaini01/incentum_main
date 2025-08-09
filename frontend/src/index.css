@@ -7,7 +7,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
 }
 
 html {
@@ -16,7 +16,7 @@ html {
 
 body {
   background: linear-gradient(135deg, #0a0a0f 0%, #0f1419 25%, #1e293b 50%, #334155 75%, #475569 100%);
-  color: #f8fafc;
+  color: #1e293b;
   line-height: 1.6;
   min-height: 100vh;
 }
@@ -542,9 +542,9 @@ section, div[class*="bg-"] {
 /* Enhanced background patterns matching loan page */
 .bg-grid-pattern {
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.53) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.6) 1px, transparent 1px);
-  background-size: 130px 130px;
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .bg-dot-pattern {
@@ -609,4 +609,37 @@ input[type="range"]::-moz-range-thumb:hover {
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.6);
 }
 
+/* Fix for dropdown option styling in loan forms */
+select option {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  padding: 8px;
+}
 
+select option:hover {
+  background-color: #334155 !important;
+}
+
+select option:checked {
+  background-color: #0ea5e9 !important;
+}
+
+/* Dark theme select dropdown styling */
+select {
+  color-scheme: dark;
+}
+
+/* Ensure proper contrast for all browsers */
+@media (prefers-color-scheme: dark) {
+  select option {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  select option {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+  }
+}

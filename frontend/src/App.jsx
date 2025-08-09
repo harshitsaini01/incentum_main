@@ -2,14 +2,13 @@ import { Routes, Route } from "react-router-dom";
 import { UserContextProvider } from "./contextapi/UserContext";
 import SignupPage from "./Pages/authentication/SignupPage";
 import LoginPage from "./Pages/authentication/LoginPage";
-import AdminLoginPage from "./Pages/authentication/AdminLoginPage";
+
 import HomePage from "./Pages/homePage/HomePage";
 import HomeLoan from "./Pages/loans/homeLoan/HomeLoan";
 import VehicleLoan from "./Pages/loans/vehicleLoan/VehicleLoan";
 import PersonalLoan from "./Pages/loans/personalLoan/PersonalLoan";
 import BusinessLoan from "./Pages/loans/businessLoan/BusinessLoan";
 import MortgageLoan from "./Pages/loans/mortgageLoan/MortgageLoan";
-import Profile from "./Pages/authentication/Profile";
 import UserProfile from "./Pages/UserProfile";
 import UserDashboard from "./Pages/dashboard/UserDashboard";
 import HomeDashboard from "./Pages/dashboard/homedashboard";
@@ -33,12 +32,10 @@ import CoApplicantForm from "./Pages/Forms/CoApplicantForm";
 import ApplicationSummary from "./Pages/Forms/ApplicationSummary";
 import LoanApplicationRedirect from "./Pages/Forms/LoanApplicationRedirect";
 import Layout from "./components/layout/Layout";
-import ProtectedAdminRoute from "./Pages/authentication/ProtectedAdminRoute";
 import ProtectedUserRoute from "./Pages/authentication/ProtectedUserRoute";
-
+import ProtectedAdminRoute from "./Pages/admin/ProtectedAdminRoute";
 import AdminLogin from "./Pages/admin/AdminLogin";
 import AdminDashboard from "./Pages/admin/AdminDashboard";
-import ProtectedAdminRouteNew from "./Pages/admin/ProtectedAdminRoute";
 import ApplicationViewPage from "./Pages/admin/ApplicationViewPage";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -119,14 +116,14 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={
-          <ProtectedAdminRouteNew>
+          <ProtectedAdminRoute>
             <AdminDashboard />
-          </ProtectedAdminRouteNew>
+          </ProtectedAdminRoute>
         } />
         <Route path="/admin/application/:applicationId" element={<ApplicationViewPage />} />
         
         {/* Legacy Admin Routes */}
-        <Route path="/admin-login" element={<AdminLoginPage />} />
+
         <Route
           path={ADMIN_ROUTE}
           element={

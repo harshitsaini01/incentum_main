@@ -43,8 +43,7 @@ const TrustedClients = () => {
       avatar: "KS",
       review:
         "I had a fantastic experience with Incentum. The loan application process was straightforward, and their team was incredibly helpful in guiding me through every step. I received my loan approval quickly and at competitive interest rates. The transparency they offer is commendable—no hidden fees or surprises.",
-      loanType: "Business Loan",
-      amount: "₹25 Lakhs"
+
     },
     {
       id: 2,
@@ -201,12 +200,7 @@ const TrustedClients = () => {
                     {/* Loan Details */}
                     <div className="flex items-center justify-between pt-4 border-t border-blue-400/30">
                       <div>
-                        <div className="text-blue-400 font-semibold text-sm">{review.loanType}</div>
                         <div className="text-gray-300 text-xs">{review.time}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-yellow-400 font-bold text-lg">{review.amount}</div>
-                        <div className="text-gray-300 text-xs">Loan Amount</div>
                       </div>
                     </div>
 

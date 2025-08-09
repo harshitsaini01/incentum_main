@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaChevronDown, FaBars, FaTimes, FaHome, FaInfoCircle, FaCalculator, FaPhoneAlt, FaUser, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
-import { MdAccountBalance, MdDirectionsCar, MdPerson, MdBusiness, MdHome } from "react-icons/md";
+import { MdAccountBalance, MdDirectionsCar, MdPerson, MdBusiness } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -95,12 +95,16 @@ const Header = () => {
   const userName = user?.data?.name || user?.name || "User";
 
   const serviceItems = [
-    { name: "Home Loan", path: "/home-loan", icon: <MdHome className="w-5 h-5" />, color: "text-blue-500" },
+    { name: "Home Loan", path: "/home-loan", icon: <FaHome className="w-5 h-5" />, color: "text-blue-500" },
     { name: "Vehicle Loan", path: "/vehicle-loan", icon: <MdDirectionsCar className="w-5 h-5" />, color: "text-green-500" },
     { name: "Personal Loan", path: "/personal-loan", icon: <MdPerson className="w-5 h-5" />, color: "text-purple-500" },
-    { name: "Business Loan", path: "/business-loan", icon: <MdBusiness className="w-5 h-5" />, color: "text-orange-500" },
+    { name: "Business Loan", path: "/business-loan", icon: <MdBusiness className="w-5 h-5" />, color: "text-yellow-500" },
     { name: "Mortgage Loan", path: "/mortgage-loan", icon: <MdAccountBalance className="w-5 h-5" />, color: "text-red-500" },
   ];
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <motion.header 
@@ -113,6 +117,7 @@ const Header = () => {
           : 'bg-gradient-to-r from-blue-900/95 via-blue-800/95 to-blue-900/95 backdrop-blur-xl'
       }`}
     >
+      <ToastContainer position="top-center" autoClose={2000} />
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex justify-between items-center py-3">
           {/* Logo Section */}
@@ -136,7 +141,7 @@ const Header = () => {
               <FaHome className="w-4 h-4" />
               <span>Home</span>
             </Link>
-            
+
             <Link
               to="/about-us"
               className={`flex items-center space-x-2 font-medium transition-all duration-300 hover:scale-105 ${
@@ -145,6 +150,28 @@ const Header = () => {
             >
               <FaInfoCircle className="w-4 h-4" />
               <span>About</span>
+            </Link>
+
+            {/* EMI Calculator */}
+            <Link
+              to="/emi-calculator"
+              className={`flex items-center space-x-2 font-medium transition-all duration-300 hover:scale-105 ${
+                scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-300'
+              }`}
+            >
+              <FaCalculator className="w-4 h-4" />
+              <span>EMI Calculator</span>
+            </Link>
+
+            {/* Contact */}
+            <Link
+              to="/contact-us"
+              className={`flex items-center space-x-2 font-medium transition-all duration-300 hover:scale-105 ${
+                scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-300'
+              }`}
+            >
+              <FaPhoneAlt className="w-4 h-4" />
+              <span>Contact</span>
             </Link>
 
             {/* Services Dropdown */}
@@ -168,132 +195,97 @@ const Header = () => {
               <AnimatePresence>
                 {isServicesDropdownOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-full mt-2 right-0 w-64 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-600/50 overflow-hidden"
+                    className="absolute left-0 mt-2 w-64 bg-gray-900 rounded-lg shadow-2xl py-2 z-50 overflow-hidden border border-gray-800"
                   >
-                    <div className="p-2">
-                      {serviceItems.map((item, index) => (
-                        <motion.div
-                          key={item.path}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
+                    <div className="px-4 py-3 border-b border-gray-800">
+                    </div>
+                    <div className="divide-y divide-gray-800">
+                      {serviceItems.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.path}
+                          className={`flex items-center px-4 py-3 hover:bg-gray-800 transition-colors ${item.color}`}
+                          onClick={() => handleServiceClick(item.path)}
                         >
-                          <Link
-                            to={item.path}
-                            onClick={() => handleServiceClick(item.path)}
-                            className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-600/50 transition-all duration-300 group"
-                          >
-                            <div className={`${item.color} group-hover:scale-110 transition-transform duration-300`}>
-                              {item.icon}
-                            </div>
-                            <span className="text-white font-medium group-hover:text-blue-300 transition-colors duration-300">
-                              {item.name}
-                            </span>
-                          </Link>
-                        </motion.div>
+                          <div className={`p-1.5 rounded-lg bg-white/10`}>
+                            {React.cloneElement(item.icon, { className: 'w-4 h-4' })}
+                          </div>
+                          <span className="ml-3 text-sm font-medium text-white">{item.name}</span>
+                        </Link>
                       ))}
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-
-            <Link
-              to="/emi-calculator"
-              className={`flex items-center space-x-2 font-medium transition-all duration-300 hover:scale-105 ${
-                scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-300'
-              }`}
-            >
-              <FaCalculator className="w-4 h-4" />
-              <span>EMI Calculator</span>
-            </Link>
-
-            <Link
-              to="/contact-us"
-              className={`flex items-center space-x-2 font-medium transition-all duration-300 hover:scale-105 ${
-                scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-300'
-              }`}
-            >
-              <FaPhoneAlt className="w-4 h-4" />
-              <span>Contact</span>
-            </Link>
-
-            {/* User Profile or Get Started Button */}
-            {user ? (
-              <div className="relative user-profile-dropdown">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  onClick={() => setShowLogout(!showLogout)}
-                  className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 rounded-full shadow-lg transition-all duration-300"
-                >
-                  <FaUserCircle className="w-5 h-5" />
-                  <span className="font-medium">{userName}</span>
-                </motion.button>
-
-                <AnimatePresence>
-                  {showLogout && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-full mt-2 right-0 w-48 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-600/50 overflow-hidden"
-                    >
-                      <div className="p-2">
-                        <Link
-                          to="/user-profile"
-                          className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-slate-600/50 transition-all duration-300 group"
-                        >
-                          <FaUser className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform duration-300" />
-                          <span className="text-white font-medium group-hover:text-blue-300 transition-colors duration-300">
-                            Profile
-                          </span>
-                        </Link>
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-300 group w-full text-left"
-                        >
-                          <FaSignOutAlt className="w-4 h-4 text-red-400 group-hover:scale-110 transition-transform duration-300" />
-                          <span className="text-white font-medium group-hover:text-red-300 transition-colors duration-300">
-                            Logout
-                          </span>
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  to="/signup-page"
-                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 px-6 py-2.5 rounded-full font-semibold shadow-lg transition-all duration-300 hover:shadow-xl"
-                >
-                  Get Started
-                </Link>
-              </motion.div>
-            )}
           </nav>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleMobileMenu}
-            className={`lg:hidden p-2 rounded-lg transition-all duration-300 ${
-              scrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'
-            }`}
-          >
-            {isMobileMenuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
-          </motion.button>
+          {/* User Actions */}
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <div className="relative user-profile-dropdown">
+                <button
+                  onClick={() => setShowLogout(!showLogout)}
+                  className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors"
+                >
+                  <FaUserCircle className="w-5 h-5" />
+                  <span className="hidden md:inline">
+                    {userName.split(" ")[0]}
+                  </span>
+                </button>
+
+                {showLogout && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50">
+                    <Link
+                      to="/profile"
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowLogout(false)}
+                    >
+                      <FaUser className="mr-2" /> My Profile
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left flex items-center px-4 py-2 text-red-600 hover:bg-gray-100"
+                    >
+                      <FaSignOutAlt className="mr-2" /> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/login-page"
+                  className="hidden md:block bg-white text-blue-700 hover:bg-gray-100 px-6 py-2.5 rounded-full font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+                >
+                  Login
+                </Link>
+              </>
+            )}
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-white hover:text-gray-200 focus:outline-none p-2"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <FaTimes className="w-6 h-6" />
+                ) : (
+                  <FaBars className="w-6 h-6" />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -301,123 +293,70 @@ const Header = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-white/95 backdrop-blur-xl border-t border-gray-200/20"
+            className="md:hidden bg-white shadow-lg overflow-hidden"
           >
-            <div className="container mx-auto px-4 py-4">
-              <div className="space-y-2">
-                <Link
-                  to="/"
-                  onClick={toggleMobileMenu}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-blue-50 transition-all duration-300 text-gray-700 hover:text-blue-600"
+            <div className="px-4 py-3 space-y-2">
+              <Link
+                to="/"
+                className="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded-lg"
+                onClick={toggleMobileMenu}
+              >
+                Home
+              </Link>
+              
+              <div className="relative">
+                <button
+                  onClick={toggleServicesDropdown}
+                  className="w-full flex justify-between items-center py-2 px-3 text-gray-700 hover:bg-gray-100 rounded-lg"
                 >
-                  <FaHome className="w-5 h-5" />
-                  <span className="font-medium">Home</span>
-                </Link>
+                  <span>Our Services</span>
+                  <FaChevronDown
+                    className={`transition-transform ${
+                      isServicesDropdownOpen ? "transform rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-                <Link
-                  to="/about-us"
-                  onClick={toggleMobileMenu}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-blue-50 transition-all duration-300 text-gray-700 hover:text-blue-600"
-                >
-                  <FaInfoCircle className="w-5 h-5" />
-                  <span className="font-medium">About</span>
-                </Link>
-
-                {/* Mobile Services */}
-                <div className="space-y-1">
-                  <button
-                    onClick={toggleServicesDropdown}
-                    className="flex items-center justify-between w-full px-4 py-3 rounded-xl hover:bg-blue-50 transition-all duration-300 text-gray-700 hover:text-blue-600"
-                  >
-                    <span className="font-medium">Services</span>
-                    <motion.div
-                      animate={{ rotate: isServicesDropdownOpen ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <FaChevronDown className="w-4 h-4" />
-                    </motion.div>
-                  </button>
-                  
-                  <AnimatePresence>
-                    {isServicesDropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="ml-4 space-y-1"
-                      >
-                        {serviceItems.map((item) => (
-                          <Link
-                            key={item.path}
-                            to={item.path}
-                            onClick={() => handleServiceClick(item.path)}
-                            className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition-all duration-300 text-gray-600 hover:text-blue-600"
-                          >
-                            <div className={item.color}>{item.icon}</div>
-                            <span>{item.name}</span>
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <Link
-                  to="/emi-calculator"
-                  onClick={toggleMobileMenu}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-blue-50 transition-all duration-300 text-gray-700 hover:text-blue-600"
-                >
-                  <FaCalculator className="w-5 h-5" />
-                  <span className="font-medium">EMI Calculator</span>
-                </Link>
-
-                <Link
-                  to="/contact-us"
-                  onClick={toggleMobileMenu}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-blue-50 transition-all duration-300 text-gray-700 hover:text-blue-600"
-                >
-                  <FaPhoneAlt className="w-5 h-5" />
-                  <span className="font-medium">Contact</span>
-                </Link>
-
-                {/* Mobile User Actions */}
-                <div className="pt-4 border-t border-gray-200">
-                  {user ? (
-                    <div className="space-y-2">
+                {isServicesDropdownOpen && (
+                  <div className="ml-4 mt-1 space-y-1">
+                    {serviceItems.map((item) => (
                       <Link
-                        to="/user-profile"
-                        onClick={toggleMobileMenu}
-                        className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-blue-50 transition-all duration-300 text-gray-700 hover:text-blue-600"
+                        key={item.name}
+                        to={item.path}
+                        className={`flex items-center py-2 px-3 hover:bg-gray-100 rounded-lg ${item.color}`}
+                        onClick={() => handleServiceClick(item.path)}
                       >
-                        <FaUser className="w-5 h-5" />
-                        <span className="font-medium">Profile</span>
+                        {item.icon}
+                        <span className="ml-2 text-gray-700">{item.name}</span>
                       </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-all duration-300 text-gray-700 hover:text-red-600 w-full text-left"
-                      >
-                        <FaSignOutAlt className="w-5 h-5" />
-                        <span className="font-medium">Logout</span>
-                      </button>
-                    </div>
-                  ) : (
-                    <Link
-                      to="/signup-page"
-                      onClick={toggleMobileMenu}
-                      className="flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 px-6 py-3 rounded-full font-semibold shadow-lg transition-all duration-300 hover:shadow-xl"
-                    >
-                      Get Started
-                    </Link>
-                  )}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
+
+              {!user && (
+                <>
+                  <div className="border-t border-gray-200 my-2"></div>
+                  <Link
+                    to="/login-page"
+                    className="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    onClick={toggleMobileMenu}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup-page"
+                    className="block py-2 px-3 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    onClick={toggleMobileMenu}
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      <ToastContainer position="top-center" autoClose={2000} />
     </motion.header>
   );
 };
