@@ -109,7 +109,7 @@ const VehicleLoanForm = () => {
   React.useEffect(() => {
     const createApplication = async () => {
       try {
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/create`, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/create`, {
           userId: user.id,
           loanType: 'vehicle'
         }, {
@@ -135,7 +135,7 @@ const VehicleLoanForm = () => {
     if (!applicationId) return;
 
     try {
-              await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/save-step`, {
+              await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/save-step`, {
         applicationId,
         step,
         stepData
@@ -329,7 +329,7 @@ const VehicleLoanForm = () => {
       }
       
       // Submit application
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/submit`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/submit`, {
         applicationId: applicationId
       }, {
         withCredentials: true
@@ -364,7 +364,7 @@ const VehicleLoanForm = () => {
       formData.append('documentType', documentType);
       formData.append('applicantType', 'main');
 
-              const response = await axios.post(`${import.meta.env.VITE_API_URL}/multi-step-form/upload-document`, formData, {
+              const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/multi-step-form/upload-document`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });
