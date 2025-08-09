@@ -99,14 +99,14 @@ const loginUser = asyncHandler(async (req, res) => {
     .cookie("token", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax", // Changed to lax for cross-site compatibility
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // 'none' for cross-site in production
       maxAge: 1000 * 60 * 60, // 1 hour
       path: "/",
     })
     .cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       path: "/",
     })
@@ -144,13 +144,13 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
     })
     .clearCookie("refreshToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
     })
     .json(new ApiResponse(200, {}, "User logged out successfully"));

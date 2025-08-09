@@ -52,12 +52,27 @@ app.use(
 );
 app.use(
   cors({
-    origin: [
-      process.env.VITE_API_URL || "http://localhost:5173",
-      "http://localhost:5174", // Add explicit frontend URL
-      "http://localhost:3000"  // Common React default
-    ],
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+    origin: function(origin, callback) {
+      const allowedOrigins = [
+        "https://incentum.ai",
+        "https://www.incentum.ai",
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+        process.env.FRONTEND_URL
+      ].filter(Boolean);
+      
+      // Allow requests with no origin (like mobile apps or Postman)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log('CORS blocked origin:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-Token"],
     credentials: true, // Required for cookies to be sent
     exposedHeaders: ["Set-Cookie", "X-CSRF-Token"],
